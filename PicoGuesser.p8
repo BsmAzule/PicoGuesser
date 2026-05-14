@@ -1,6 +1,11 @@
 pico-8 cartridge // http://www.pico-8.com
 version 43
 __lua__
+	m = true
+	col = 0
+	timer = 0
+	cam_y = 100
+	target_y = 7
 function _init()
 	rota = rnd(0,1)
 	rotb = rnd(0,1)
@@ -9,22 +14,26 @@ function _init()
 	playx = 0
 	playy = 0
 	phase = 0
-	m = true
 end
 //update
 function _update()
 	cls()
 	if (phase == 0) then
-		//menu
+		//menu animation
+		update_menu()
 	elseif (phase == 1) then
 	elseif (phase == 2) then
+		update_gameover()
 	end
 end
 // draw
 function _draw()
 	if (phase == 0) then
 		//menu
-		map(79,9)
+		camera(0, flr(cam_y))
+		map(79,7)
+		print("press 🅾️ to start", 30, 88, col)
+		print("press ❎ for rules", 28, 98, 7)
 		if m==true then
 			music(0)
 			m=false
@@ -34,6 +43,25 @@ function _draw()
 	elseif (phase == 2) then
 	end
 end 
+-->8
+function update_menu()
+
+	cam_y += (target_y - cam_y) * 0.05
+	
+	timer = timer+1
+	if timer == 20 then
+	timer = 0
+	end
+	if timer > 5 then
+	col = 7
+	else
+	col = 0
+	end
+end
+
+function update_gameover()
+
+end
 __gfx__
 000000003b33333333b333b3cccccccc000000000006600000066000000660000000000000000000000000000000000000000000000000000000000000000000
 00000000b33b3333b33bb333cccccccc000000000006600000066000000660000000000000777700000000000007000000000000000000000000000000000000
